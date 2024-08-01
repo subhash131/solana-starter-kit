@@ -1,6 +1,6 @@
 
 [programs.devnet]
-chainlink_solana_demo = "JC16qi56dgcLoaTVe4BvnCoDL6FhH5NtahA7jmWZFdqm"
+chainlink_solana_demo = "3dKtG7EREnWzWzw8rpgDEAd34AimN3iyv2Z138bWmoGk"
 
 [registry]
 url = "https://anchor.projectserum.com"

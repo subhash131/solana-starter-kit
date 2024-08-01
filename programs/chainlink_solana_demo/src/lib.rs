@@ -2,7 +2,7 @@ use anchor_lang::prelude::*;
 
 use chainlink_solana as chainlink;
 
-declare_id!("JC16qi56dgcLoaTVe4BvnCoDL6FhH5NtahA7jmWZFdqm");
+declare_id!("3dKtG7EREnWzWzw8rpgDEAd34AimN3iyv2Z138bWmoGk");
 
 #[account]
 pub struct Decimal {
@@ -34,6 +34,7 @@ impl std::fmt::Display for Decimal {
 
 #[program]
 pub mod chainlink_solana_demo {
+    use solana_program::entrypoint::ProgramResult;
     use super::*;
         pub fn execute(ctx: Context<Execute>) -> ProgramResult  {
         let round = chainlink::latest_round_data(
