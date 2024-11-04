@@ -1,12 +1,12 @@
 [package]
-name = "chainlink-solana-demo"
+name = "stable_fun"
 version = "0.1.0"
 description = "Created with Anchor"
 edition = "2018"
 
 [lib]
 crate-type = ["cdylib", "lib"]
-name = "chainlink_solana_demo"
+name = "stable_fun"
 
 [features]
 default = []

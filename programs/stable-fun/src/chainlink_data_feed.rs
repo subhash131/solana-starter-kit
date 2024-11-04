@@ -1,40 +1,32 @@
 use anchor_lang::prelude::*;
 
 use chainlink_solana as chainlink;
+use chainlink_solana::Round;
 
-declare_id!("CnrgKig7fjYfWkxNVWkNwNMziuarP1Aiu7MkJuXRWEY5");
+pub fn execute(
+    ctx: Context<Execute>
+) -> Result<()> {
+    let round: Round = chainlink::latest_round_data(
+        ctx.accounts.chainlink_program.to_account_info(),
+        ctx.accounts.chainlink_feed.to_account_info(),
+    )?;
 
-#[program]
-pub mod chainlink_solana_demo {
+    let description: String = chainlink::description(
+        ctx.accounts.chainlink_program.to_account_info(),
+        ctx.accounts.chainlink_feed.to_account_info(),
+    )?;
 
-    use chainlink_solana::Round;
+    let decimals: u8 = chainlink::decimals(
+        ctx.accounts.chainlink_program.to_account_info(), 
+        ctx.accounts.chainlink_feed.to_account_info())?;
 
-    use super::*;
-    pub fn execute(
-        ctx: Context<Execute>
-    ) -> Result<()> {
-        let round: Round = chainlink::latest_round_data(
-            ctx.accounts.chainlink_program.to_account_info(),
-            ctx.accounts.chainlink_feed.to_account_info(),
-        )?;
+    let decimal: &mut Account<Decimal> = &mut ctx.accounts.decimal;
+    decimal.value = round.answer;
+    decimal.decimals = u32::from(decimals);
 
-        let description: String = chainlink::description(
-            ctx.accounts.chainlink_program.to_account_info(),
-            ctx.accounts.chainlink_feed.to_account_info(),
-        )?;
-
-        let decimals: u8 = chainlink::decimals(
-            ctx.accounts.chainlink_program.to_account_info(), 
-            ctx.accounts.chainlink_feed.to_account_info())?;
-
-        let decimal: &mut Account<Decimal> = &mut ctx.accounts.decimal;
-        decimal.value = round.answer;
-        decimal.decimals = u32::from(decimals);
-
-        let decimal_print: Decimal = Decimal::new(round.answer, u32::from(decimals));
-        msg!("{} price is {}", description, decimal_print);
-        Ok(())
-    }
+    let decimal_print: Decimal = Decimal::new(round.answer, u32::from(decimals));
+    msg!("{} price is {}", description, decimal_print);
+    Ok(())
 }
 
 #[derive(Accounts)]
